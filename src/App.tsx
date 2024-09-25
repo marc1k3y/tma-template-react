@@ -1,9 +1,11 @@
-import { AppRouter } from "./service/Router";
+import { RoutesElement } from "./service/Router";
+import { NavbarElement } from "./ui/navbar";
 
 export default function App() {
   return (
     <div>
-      <AppRouter />
+      <RoutesElement />
+      <NavbarElement />
     </div>
   );
 }

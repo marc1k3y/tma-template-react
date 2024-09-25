@@ -1,4 +1,5 @@
 import { PropsWithChildren, StrictMode, useEffect } from "react";
+import { AppRouter } from "./Router";
 
 export const AppProvider = ({ children }: PropsWithChildren) => {
 
@@ -8,7 +9,9 @@ export const AppProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <StrictMode>
-      {children}
+      <AppRouter>
+        {children}
+      </AppRouter>
     </StrictMode>
   );
 }

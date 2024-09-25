@@ -1,4 +1,7 @@
-import { BrowserRouter, Navigate, Route } from "react-router-dom";
+import { PropsWithChildren, useEffect, useMemo } from "react";
+import { Navigate, Route, Router, Routes } from "react-router-dom";
+import { initNavigator } from "@telegram-apps/sdk";
+import { useIntegration } from "@telegram-apps/react-router-integration";
 import { MainScreen } from "../screens/Main";
 import { AboutScreen } from "../screens/About";
 
@@ -7,11 +10,29 @@ const routes = [
   { path: "/about", element: <AboutScreen /> },
 ];
 
-export const AppRouter = () => {
+export const RoutesElement = () => {
   return (
-    <BrowserRouter>
-      {routes.map((item) => <Route key={item.path} path={item.path} element={item.element} />)}
+    <Routes>
+      {routes.map((item) => {
+        return <Route key={item.path} path={item.path} element={item.element} />
+      })}
       <Route path="*" element={<Navigate to="/" />} />
-    </BrowserRouter>
+    </Routes>
+  );
+}
+
+export const AppRouter = ({ children }: PropsWithChildren) => {
+  const navigator = useMemo(() => initNavigator("app-navigation-state"), []);
+  const [location, reactNavigator] = useIntegration(navigator);
+
+  useEffect(() => {
+    navigator.attach();
+    return () => navigator.detach();
+  }, [navigator]);
+
+  return (
+    <Router location={location} navigator={reactNavigator}>
+      {children}
+    </Router>
   );
 }
